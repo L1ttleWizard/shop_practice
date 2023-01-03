@@ -16,10 +16,10 @@ var makeElement = function (tagName, className, text) {
 
     return element
 };
-var createCard = function (item) {
+var createCard = function (item) { 
     var element = document.createElement('li');
     element.classList.add('list-item');
-    element.id = i + 'n';
+    element.id =item.id;
 
     var fruitImg = makeElement('img', 'fruit-image');
     element.appendChild(fruitImg);
@@ -54,13 +54,15 @@ var createCard = function (item) {
 var createBasketElement = function (item) {
     var basketItem = document.createElement('li');
     basketItem.classList.add('basket-item');
-
+    console.log(item,'sdf')
+    basketItem.id=item.id;
     var miniTitle = makeElement('h1', 'mini-title', item.title);
     basketItem.appendChild(miniTitle);
 
     var price = makeElement('p', 'mini-price', item.price);
     price.style.textDecoration = 'line-through';
     basketItem.appendChild(price);
+    
 
     
 
@@ -83,7 +85,8 @@ var createBasketElement = function (item) {
     deleteBasketElement.textContent = '';
     deleteBasketElement.appendChild(trashIcon);
     basketItem.appendChild(deleteBasketElement);
-
+    basketItem.id=item.id;
+    deleteBasketElement.id=item.id;
     console.log(basketItem);
 
     return basketItem
@@ -98,6 +101,7 @@ var fruits = [
         salePrice: '$ 10 USD',
         imgSrc: 'images/pngwing.com.png',
         isSale: false,
+        id:'clubnika',
     },
     {
         title: 'абрикос',
@@ -106,6 +110,7 @@ var fruits = [
         salePrice: '$ 150 USD',
         imgSrc: 'images/Абрикос.png',
         isSale: true,
+        id:"abrikos",
     },
     {
         title: 'арбуз',
@@ -114,6 +119,7 @@ var fruits = [
         salePrice: '$ 300 USD',
         imgSrc: 'images/pngwing.com (1).png',
         isSale: true,
+        id:'arbuz',
     },
     {
         title: 'арбуз',
@@ -122,6 +128,7 @@ var fruits = [
         salePrice: '$ 2000 USD',
         imgSrc: 'images/pngwing.com (1).png',
         isSale: true,
+        id:'arbuz-2',
     }
 ];
 
@@ -144,7 +151,7 @@ for (let i = 0; i < fruitLink.length; i++) {
 // }
 
 
-
+var deleteButtons;
 
 // fruitLink.addEventListener('click', function (evt) {
 //     evt.preventDefault();
@@ -156,35 +163,30 @@ var basketItem = []
 let fruitListener = function (elem, index) {
     elem.addEventListener('click', function () {
         basketItems.appendChild(createBasketElement(fruits[index]));
+        console.log(basketItems)
+        console.log(basketItems.querySelectorAll('.basket-item'),'items')
         basketItem.push(index);
         console.log(basketItem);
+        var deleteButtons= document.querySelectorAll('.mini-delete');
+        console.log(deleteButtons,'deleteButtons');
+
+    });
+}
+let deleteListener = function(elem,id){
+    console.log('dddd')
+    elem.addEventListener('click', function () {
+        basketItems.removeChild(basketItems.querySelector(id));
     });
 }
 
 console.log('ffffff');
 
 var basketInner = document.querySelector('.basket-inner');
-
 var basket = document.querySelector('.basket');
-
 var basketItems = document.querySelector('.basket-items');
-
 var basketContent = basketItems.querySelectorAll('.basket-item');
 
-var deleteButton = document.querySelectorAll('.mini-delete');
-var deleteButtonId = [];
 
-for (var i = 0; i < deleteButton.length; i++) {
-    deleteButtonId.push(deleteButton[i].id);
-}
-console.log('deleteButtonId');
-for (let i = 0; i < fruitLinkId.length; i++) {
-    fruitListener(fruitLink[i], i);
-}
-
-for (let i = 0; i < deleteButtonId.length; i++) {
-    deleteListener(deleteButton[i], i);
-}
 
 basket.addEventListener('click', function (evt) {
     evt.preventDefault();
@@ -193,14 +195,12 @@ basket.addEventListener('click', function (evt) {
     } else {
         basketInner.style.display = 'none';
     };
-})
+});
 
-console.log(basketItems);
 
-var deleteListener = function (elem, index) {
-    elem.addEventListener('click', function () {
-        basketItems.basketButton[index].remove();
-        console.log('+');
-    });
+for (let i = 0; i < fruitLinkId.length; i++) {
+    fruitListener(fruitLink[i], i);
 }
-
+for (let i = 0; i <deleteButtons.length();i++){
+    deleteListener(deleteButtons[i],deleteButtons[i].id);
+}
